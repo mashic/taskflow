@@ -1,0 +1,56 @@
+{
+  "name": "taskflow",
+  "version": "1.0.0",
+  "description": "Real-time Kanban collaboration platform — Angular 21 + NestJS monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "dev:web": "pnpm --filter @taskflow/web dev",
+    "dev:api": "pnpm --filter @taskflow/api dev",
+    "build": "pnpm -r build",
+    "build:web": "pnpm --filter @taskflow/web build",
+    "build:api": "pnpm --filter @taskflow/api build",
+    "test": "pnpm -r test",
+    "test:web": "pnpm --filter @taskflow/web test",
+    "test:api": "pnpm --filter @taskflow/api test",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,html,scss,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,html,scss,css}\"",
+    "prepare": "husky",
+    "e2e": "pnpm --filter @taskflow/web e2e",
+    "db:migrate": "pnpm --filter @taskflow/api db:migrate",
+    "db:generate": "pnpm --filter @taskflow/api db:generate",
+    "db:push": "pnpm --filter @taskflow/api db:push",
+    "db:studio": "pnpm --filter @taskflow/api db:studio"
+  },
+  "keywords": [
+    "angular",
+    "nestjs",
+    "monorepo",
+    "kanban",
+    "real-time",
+    "portfolio"
+  ],
+  "author": "masic",
+  "license": "MIT",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "devDependencies": {
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,html,scss,css}": [
+      "prettier --write"
+    ]
+  }
+}
