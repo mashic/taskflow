@@ -2,31 +2,43 @@
 export interface User {
   id: string;
   email: string;
-  name: string;
-  avatarUrl?: string;
+  name: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface CreateUserDto {
-  email: string;
-  password: string;
-  name: string;
-}
-
-export interface LoginDto {
-  email: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  user: User;
+// Auth types
+export interface AuthTokens {
   accessToken: string;
   refreshToken: string;
 }
 
-export interface RefreshTokenDto {
-  refreshToken: string;
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  name?: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  tokens: AuthTokens;
+}
+
+// API response wrapper
+export interface ApiResponse<T> {
+  data: T;
+  message?: string;
+}
+
+export interface ApiError {
+  statusCode: number;
+  message: string;
+  error?: string;
 }
 
 // Board types
