@@ -10,8 +10,8 @@ TaskFlow is built in 4 phases: Foundation (monorepo + auth), Core Features (boar
 - Integer phases (1, 2, 3, 4): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Foundation** - Monorepo setup, auth module, core UI shell
-- [ ] **Phase 2: Core Features** - Boards, lists, tasks, real-time sync
+- [x] **Phase 1: Foundation** - Monorepo setup, auth module, core UI shell (completed 2026-03-14)
+- [ ] **Phase 2: Core Features** - Boards, lists, tasks, real-time sync ← Next
 - [ ] **Phase 3: Advanced Features** - Comments, activity, search, team management
 - [ ] **Phase 4: Polish** - Performance, testing coverage, DevOps
 
@@ -32,12 +32,12 @@ TaskFlow is built in 4 phases: Foundation (monorepo + auth), Core Features (boar
 **Plans**: 6 plans
 
 Plans:
-- [ ] 01-01: Initialize pnpm monorepo structure (workspace.yaml, folder structure)
-- [ ] 01-02: Create NestJS API app with Prisma + PostgreSQL setup
-- [ ] 01-03: Implement backend auth (register, login, refresh token rotation)
-- [ ] 01-04: Create Angular 21 web app with standalone components
-- [ ] 01-05: Implement frontend auth (AuthService, guards, interceptors)
-- [ ] 01-06: Create core UI shell (layout, theme, toast notifications)
+- [x] 01-01: Initialize pnpm monorepo structure (workspace.yaml, folder structure)
+- [x] 01-02: Create NestJS API app with Prisma + PostgreSQL setup
+- [x] 01-03: Implement backend auth (register, login, refresh token rotation)
+- [x] 01-04: Create Angular 21 web app with standalone components
+- [x] 01-05: Implement frontend auth (AuthService, guards, interceptors)
+- [x] 01-06: Create core UI shell (layout, theme, toast notifications)
 
 ### Phase 2: Core Features
 
