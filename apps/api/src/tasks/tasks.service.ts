@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from '@prisma/client';
 import { BoardsService } from '../boards/boards.service';
+import { EventsGateway } from '../events/events.gateway';
 import { ListsRepository } from '../lists/lists.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { MoveTaskDto } from './dto/move-task.dto';
@@ -13,6 +14,7 @@ export class TasksService {
     private tasksRepository: TasksRepository,
     private listsRepository: ListsRepository,
     private boardsService: BoardsService,
+    private eventsGateway: EventsGateway,
   ) {}
 
   async create(listId: string, dto: CreateTaskDto, userId: string): Promise<Task> {
@@ -27,7 +29,7 @@ export class TasksService {
     // Get max position and add 1
     const maxPosition = await this.tasksRepository.getMaxPositionInList(listId);
     
-    return this.tasksRepository.create({
+    const task = await this.tasksRepository.create({
       title: dto.title,
       description: dto.description,
       listId,
@@ -37,6 +39,9 @@ export class TasksService {
       dueDate: dto.dueDate ? new Date(dto.dueDate) : undefined,
       assigneeId: dto.assigneeId,
     });
+
+    this.eventsGateway.broadcastTaskCreated(task.boardId, task);
+    return task;
   }
 
   async findByBoard(boardId: string, userId: string): Promise<Task[]> {
@@ -68,7 +73,9 @@ export class TasksService {
     if (dto.dueDate !== undefined) updateData.dueDate = new Date(dto.dueDate);
     if (dto.assigneeId !== undefined) updateData.assigneeId = dto.assigneeId;
     
-    return this.tasksRepository.update(task.id, updateData);
+    const updatedTask = await this.tasksRepository.update(task.id, updateData);
+    this.eventsGateway.broadcastTaskUpdated(updatedTask.boardId, updatedTask);
+    return updatedTask;
   }
 
   async move(id: string, dto: MoveTaskDto, userId: string): Promise<Task> {
@@ -84,11 +91,15 @@ export class TasksService {
       throw new ForbiddenException('Cannot move task to a different board');
     }
     
-    return this.tasksRepository.move(task.id, dto.listId, dto.position);
+    const movedTask = await this.tasksRepository.move(task.id, dto.listId, dto.position);
+    this.eventsGateway.broadcastTaskMoved(movedTask.boardId, movedTask);
+    return movedTask;
   }
 
   async remove(id: string, userId: string): Promise<Task> {
     const task = await this.findOne(id, userId);
-    return this.tasksRepository.delete(task.id);
+    const deletedTask = await this.tasksRepository.delete(task.id);
+    this.eventsGateway.broadcastTaskDeleted(task.boardId, task.id);
+    return deletedTask;
   }
 }
