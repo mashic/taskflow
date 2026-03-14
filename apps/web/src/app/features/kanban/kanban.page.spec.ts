@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { signal } from '@angular/core';
+import { of } from 'rxjs';
 import { KanbanPage } from './kanban.page';
 import { BoardStore } from '../boards/board.store';
 import { ListStore } from './list.store';
 import { TaskStore } from './task.store';
+import { WebSocketService } from '../../core/websocket/websocket.service';
 import { Board, List, Task } from '@taskflow/shared-types';
 
 describe('KanbanPage', () => {
@@ -54,6 +56,15 @@ describe('KanbanPage', () => {
     createTask: vi.fn(),
   };
 
+  const mockWsService = {
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    joinBoard: vi.fn(),
+    leaveBoard: vi.fn(),
+    isConnected: signal(false),
+    currentBoardId: signal<string | null>(null),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [KanbanPage],
@@ -61,6 +72,7 @@ describe('KanbanPage', () => {
         { provide: BoardStore, useValue: mockBoardStore },
         { provide: ListStore, useValue: mockListStore },
         { provide: TaskStore, useValue: mockTaskStore },
+        { provide: WebSocketService, useValue: mockWsService },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -69,6 +81,9 @@ describe('KanbanPage', () => {
                 get: () => '1',
               },
             },
+            paramMap: of({
+              get: (key: string) => (key === 'id' ? '1' : null),
+            }),
           },
         },
       ],
@@ -87,6 +102,11 @@ describe('KanbanPage', () => {
     expect(mockBoardStore.setSelectedBoard).toHaveBeenCalledWith('1');
     expect(mockListStore.loadListsForBoard).toHaveBeenCalledWith('1');
     expect(mockTaskStore.loadTasksForBoard).toHaveBeenCalledWith('1');
+  });
+
+  it('should connect WebSocket and join board on init', () => {
+    expect(mockWsService.connect).toHaveBeenCalled();
+    expect(mockWsService.joinBoard).toHaveBeenCalledWith('1');
   });
 
   it('should display board title', () => {

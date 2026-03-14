@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { CdkDropListGroup, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Task } from '@taskflow/shared-types';
@@ -7,6 +8,7 @@ import { ListStore } from './list.store';
 import { TaskStore } from './task.store';
 import { KanbanList } from './kanban-list';
 import { TaskCreateDialog } from './task-create.dialog';
+import { WebSocketService } from '../../core/websocket/websocket.service';
 
 @Component({
   selector: 'app-kanban-page',
@@ -107,11 +109,13 @@ import { TaskCreateDialog } from './task-create.dialog';
     }
   `]
 })
-export class KanbanPage implements OnInit {
+export class KanbanPage implements OnInit, OnDestroy {
   boardStore = inject(BoardStore);
   listStore = inject(ListStore);
   taskStore = inject(TaskStore);
   private route = inject(ActivatedRoute);
+  private wsService = inject(WebSocketService);
+  private destroyRef = inject(DestroyRef);
 
   boardId = signal<string | null>(null);
   showTaskDialog = signal(false);
@@ -124,6 +128,38 @@ export class KanbanPage implements OnInit {
       this.boardStore.setSelectedBoard(id);
       this.listStore.loadListsForBoard(id);
       this.taskStore.loadTasksForBoard(id);
+      
+      // Connect WebSocket and join board room
+      this.wsService.connect();
+      this.wsService.joinBoard(id);
+    }
+
+    // Handle route changes (navigation between boards)
+    this.route.paramMap.pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((params) => {
+      const newId = params.get('id');
+      if (newId && newId !== this.boardId()) {
+        // Leave old board room, join new one
+        const oldId = this.boardId();
+        if (oldId) {
+          this.wsService.leaveBoard(oldId);
+        }
+        
+        this.boardId.set(newId);
+        this.boardStore.setSelectedBoard(newId);
+        this.listStore.loadListsForBoard(newId);
+        this.taskStore.loadTasksForBoard(newId);
+        this.wsService.joinBoard(newId);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Leave board room when navigating away
+    const id = this.boardId();
+    if (id) {
+      this.wsService.leaveBoard(id);
     }
   }
 
