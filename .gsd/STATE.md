@@ -10,32 +10,32 @@ See: .gsd/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 1 of 4 (Foundation)
-Plan: 4 of 6 in current phase
+Plan: 5 of 6 in current phase
 Status: In progress
-Last activity: 2026-03-14 — Completed 01-04-PLAN.md (Angular App Setup)
+Last activity: 2026-03-14 — Completed 01-03-PLAN.md (Auth System)
 
-Progress: [███░░░░░░░] 17%
+Progress: [████░░░░░░] 21%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 4
-- Average duration: ~3 min
-- Total execution time: ~11 min
+- Total plans completed: 5
+- Average duration: ~4 min
+- Total execution time: ~16 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 | ----- | ----- | ----- | -------- |
-| 1     | 4/6   | 11m   | ~3m      |
+| 1     | 5/6   | 16m   | ~3m      |
 | 2     | 0/8   | 0m    | -        |
 | 3     | 0/6   | 0m    | -        |
 | 4     | 0/4   | 0m    | -        |
 
 **Recent Trend:**
 
-- Last 5 plans: 01-01 ✓, 01-02 ✓, 01-03 ✓, 01-04 ✓
+- Last 5 plans: 01-01 ✓, 01-02 ✓, 01-03 ✓, 01-04 ✓, 01-03 ✓ (Auth)
 - Trend: Steady progress
 
 _Updated after each plan completion_
@@ -52,6 +52,8 @@ Recent decisions affecting current work:
 - [Phase 1]: NestJS with Prisma ORM
 - [Phase 1]: Use inline templates for simple components
 - [Phase 1]: Use .page.ts naming for routed components
+- [Phase 1]: Refresh tokens hashed with bcrypt before storing
+- [Phase 1]: Access token 15m expiry, Refresh token 7d expiry
 
 ### Pending Todos
 
@@ -64,15 +66,12 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-14
-Stopped at: Completed 01-04-PLAN.md (Angular App Setup)
-Resume file: .gsd/phases/01-foundation/01-04-SUMMARY.md
+Stopped at: Completed 01-03-PLAN.md (Auth System)
+Resume file: .gsd/phases/01-foundation/01-03-SUMMARY.md
 
 ## Next Steps
 
-1. Execute 01-05-PLAN.md (Auth System)
+1. Execute 01-05-PLAN.md (Frontend Auth)
 2. Execute 01-06-PLAN.md (Complete Phase 1)
 3. Complete Phase 1 Foundation
 4. Begin Phase 2
-2. Execute 01-03-PLAN.md (NestJS App Setup)
-3. Continue Wave 2 plans (01-04, 01-05)
-4. Complete Phase 1 Foundation
