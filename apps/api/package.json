@@ -4,7 +4,7 @@
   "description": "TaskFlow NestJS API",
   "private": true,
   "scripts": {
-    "postinstall": "npx prisma generate || true",
+    "postinstall": "pnpm dlx prisma@6 generate 2>nul || exit 0",
     "build": "nest build",
     "dev": "nest start --watch",
     "start": "nest start",
@@ -25,13 +25,17 @@
     "@nestjs/common": "^11.1.16",
     "@nestjs/core": "^11.1.16",
     "@nestjs/platform-express": "^11.1.16",
+    "@prisma/client": "6.19.2",
     "@taskflow/shared-types": "workspace:*",
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.16",
     "@types/node": "^25.5.0",
+    "prisma": "6.19.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
