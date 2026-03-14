@@ -16,5 +16,21 @@ model User {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
+  boards Board[]
+
   @@map("users")
+}
+
+model Board {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  ownerId     String    @map("owner_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  owner User @relation(fields: [ownerId], references: [id])
+
+  @@map("boards")
 }
