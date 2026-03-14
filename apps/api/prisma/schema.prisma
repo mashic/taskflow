@@ -16,7 +16,8 @@ model User {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  boards Board[]
+  boards       Board[]
+  assignedTasks Task[]
 
   @@map("users")
 }
@@ -30,7 +31,43 @@ model Board {
   updatedAt   DateTime  @updatedAt @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
-  owner User @relation(fields: [ownerId], references: [id])
+  owner User   @relation(fields: [ownerId], references: [id])
+  lists List[]
+  tasks Task[]
 
   @@map("boards")
+}
+
+model List {
+  id        String   @id @default(cuid())
+  title     String
+  boardId   String   @map("board_id")
+  position  Float
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  board Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  tasks Task[]
+
+  @@map("lists")
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  listId      String    @map("list_id")
+  boardId     String    @map("board_id")
+  position    Float
+  assigneeId  String?   @map("assignee_id")
+  dueDate     DateTime? @map("due_date")
+  priority    String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  list     List  @relation(fields: [listId], references: [id], onDelete: Cascade)
+  board    Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  assignee User? @relation(fields: [assigneeId], references: [id])
+
+  @@map("tasks")
 }
