@@ -1,9 +1,8 @@
-import { Injectable, UnauthorizedException, ForbiddenException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UsersService } from '../users/users.service';
-import { User } from '@prisma/client';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { UsersService } from '../users/users.service';
 
 export interface TokenPair {
   accessToken: string;

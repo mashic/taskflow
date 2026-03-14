@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { BoardsPage } from './boards.page';
 import { BoardStore } from './board.store';
 import { Board } from '@taskflow/shared-types';
@@ -24,7 +25,7 @@ describe('BoardsPage', () => {
     vi.clearAllMocks();
 
     await TestBed.configureTestingModule({
-      imports: [BoardsPage],
+      imports: [BoardsPage, RouterModule.forRoot([])],
       providers: [
         { provide: BoardStore, useValue: mockBoardStore },
       ],

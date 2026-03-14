@@ -17,6 +17,7 @@ describe('BoardService', () => {
   };
 
   beforeEach(() => {
+    TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [BoardService],
@@ -39,7 +40,7 @@ describe('BoardService', () => {
         expect(boards.length).toBe(1);
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/boards');
+      const req = httpMock.expectOne('/api/boards');
       expect(req.request.method).toBe('GET');
       req.flush(mockBoards);
     });
@@ -49,7 +50,7 @@ describe('BoardService', () => {
         expect(boards).toEqual([]);
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/boards');
+      const req = httpMock.expectOne('/api/boards');
       req.flush([]);
     });
   });
@@ -60,7 +61,7 @@ describe('BoardService', () => {
         expect(board).toEqual(mockBoard);
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/boards/1');
+      const req = httpMock.expectOne('/api/boards/1');
       expect(req.request.method).toBe('GET');
       req.flush(mockBoard);
     });
@@ -85,7 +86,7 @@ describe('BoardService', () => {
         expect(board.title).toBe(createDto.title);
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/boards');
+      const req = httpMock.expectOne('/api/boards');
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(createDto);
       req.flush(createdBoard);
@@ -109,7 +110,7 @@ describe('BoardService', () => {
         expect(board.title).toBe('Updated Title');
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/boards/1');
+      const req = httpMock.expectOne('/api/boards/1');
       expect(req.request.method).toBe('PATCH');
       expect(req.request.body).toEqual(updateDto);
       req.flush(updatedBoard);
@@ -122,7 +123,7 @@ describe('BoardService', () => {
         expect(result).toBeUndefined();
       });
 
-      const req = httpMock.expectOne('http://localhost:3000/boards/1');
+      const req = httpMock.expectOne('/api/boards/1');
       expect(req.request.method).toBe('DELETE');
       req.flush(null);
     });

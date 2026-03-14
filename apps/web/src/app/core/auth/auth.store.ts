@@ -1,6 +1,6 @@
 import { computed } from '@angular/core';
-import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
-import { User, AuthTokens } from '@taskflow/shared-types';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { User } from '@taskflow/shared-types';
 
 interface AuthState {
   user: User | null;

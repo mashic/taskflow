@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { JwtService } from '@nestjs/jwt';
+import { ForbiddenException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ConflictException, ForbiddenException } from '@nestjs/common';
-import { AuthService, AuthUser, TokenPair } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { JwtService } from '@nestjs/jwt';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcrypt';
+import { UsersService } from '../users/users.service';
+import { AuthService, AuthUser } from './auth.service';
 
 jest.mock('bcrypt');
 

@@ -1,6 +1,7 @@
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { BoardsService } from '../boards/boards.service';
+import { EventsGateway } from '../events/events.gateway';
 import { ListsRepository } from '../lists/lists.repository';
 import { TasksRepository } from './tasks.repository';
 import { TasksService } from './tasks.service';
@@ -69,12 +70,20 @@ describe('TasksService', () => {
       findOne: jest.fn(),
     };
 
+    const mockEventsGateway = {
+      broadcastTaskCreated: jest.fn(),
+      broadcastTaskUpdated: jest.fn(),
+      broadcastTaskMoved: jest.fn(),
+      broadcastTaskDeleted: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TasksService,
         { provide: TasksRepository, useValue: mockTasksRepository },
         { provide: ListsRepository, useValue: mockListsRepository },
         { provide: BoardsService, useValue: mockBoardsService },
+        { provide: EventsGateway, useValue: mockEventsGateway },
       ],
     }).compile();
 

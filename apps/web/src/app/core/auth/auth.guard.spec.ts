@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { Router, UrlTree } from '@angular/router';
-import { vi, Mock } from 'vitest';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Mock, vi } from 'vitest';
 import { authGuard } from './auth.guard';
 import { AuthStore } from './auth.store';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 describe('authGuard', () => {
   let mockRouter: { createUrlTree: Mock };

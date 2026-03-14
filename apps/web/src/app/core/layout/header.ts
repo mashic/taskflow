@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AuthStore } from '../auth/auth.store';
 import { AuthService } from '../auth/auth.service';
+import { AuthStore } from '../auth/auth.store';
 
 @Component({
   selector: 'app-header',

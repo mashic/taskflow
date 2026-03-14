@@ -1,9 +1,9 @@
-import { Controller, Post, Body, UseGuards, Get, HttpCode, HttpStatus, Request } from '@nestjs/common';
-import { AuthService, TokenPair, AuthUser } from './auth.service';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import { AuthService, AuthUser, TokenPair } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 interface RequestWithUser extends Request {
   user: AuthUser;

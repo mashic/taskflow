@@ -1,5 +1,6 @@
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { EventsGateway } from '../events/events.gateway';
 import { BoardsRepository } from './boards.repository';
 import { BoardsService } from './boards.service';
 
@@ -26,10 +27,16 @@ describe('BoardsService', () => {
       softDelete: jest.fn(),
     };
 
+    const mockEventsGateway = {
+      broadcastBoardUpdated: jest.fn(),
+      broadcastBoardDeleted: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BoardsService,
         { provide: BoardsRepository, useValue: mockRepository },
+        { provide: EventsGateway, useValue: mockEventsGateway },
       ],
     }).compile();
 

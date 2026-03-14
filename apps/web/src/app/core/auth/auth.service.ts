@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, tap, catchError, throwError } from 'rxjs';
-import { AuthStore } from './auth.store';
 import { AuthResponse, LoginRequest, RegisterRequest } from '@taskflow/shared-types';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthStore } from './auth.store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
