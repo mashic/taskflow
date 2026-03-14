@@ -1,17 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
+import { vi, Mock } from 'vitest';
 import { authGuard } from './auth.guard';
 import { AuthStore } from './auth.store';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 describe('authGuard', () => {
-  let mockRouter: jasmine.SpyObj<Router>;
+  let mockRouter: { createUrlTree: Mock };
   let authStore: InstanceType<typeof AuthStore>;
   let mockRoute: ActivatedRouteSnapshot;
   let mockState: RouterStateSnapshot;
 
   beforeEach(() => {
-    mockRouter = jasmine.createSpyObj('Router', ['createUrlTree']);
+    mockRouter = {
+      createUrlTree: vi.fn(),
+    };
     mockRoute = {} as ActivatedRouteSnapshot;
     mockState = { url: '/dashboard' } as RouterStateSnapshot;
 
@@ -31,7 +34,7 @@ describe('authGuard', () => {
 
   it('should redirect to login when user is not authenticated', () => {
     const loginUrlTree = {} as UrlTree;
-    mockRouter.createUrlTree.and.returnValue(loginUrlTree);
+    mockRouter.createUrlTree.mockReturnValue(loginUrlTree);
 
     const result = TestBed.runInInjectionContext(() => 
       authGuard(mockRoute, mockState)
@@ -56,12 +59,12 @@ describe('authGuard', () => {
       authGuard(mockRoute, mockState)
     );
 
-    expect(result).toBeTrue();
+    expect(result).toBe(true);
   });
 
   it('should redirect when only token exists without user', () => {
     const loginUrlTree = {} as UrlTree;
-    mockRouter.createUrlTree.and.returnValue(loginUrlTree);
+    mockRouter.createUrlTree.mockReturnValue(loginUrlTree);
     
     // Only set tokens, no user
     authStore.setTokens('access-token', 'refresh-token');
@@ -83,7 +86,7 @@ describe('authGuard', () => {
       updatedAt: new Date(),
     };
     const loginUrlTree = {} as UrlTree;
-    mockRouter.createUrlTree.and.returnValue(loginUrlTree);
+    mockRouter.createUrlTree.mockReturnValue(loginUrlTree);
 
     // First authenticate
     authStore.setAuth(mockUser, 'access-token', 'refresh-token');

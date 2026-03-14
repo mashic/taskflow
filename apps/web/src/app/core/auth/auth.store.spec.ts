@@ -30,7 +30,7 @@ describe('AuthStore', () => {
     });
 
     it('should not be loading initially', () => {
-      expect(authStore.isLoading()).toBeFalse();
+      expect(authStore.isLoading()).toBe(false);
     });
 
     it('should have no error initially', () => {
@@ -38,14 +38,14 @@ describe('AuthStore', () => {
     });
 
     it('should not be authenticated initially', () => {
-      expect(authStore.isAuthenticated()).toBeFalse();
+      expect(authStore.isAuthenticated()).toBe(false);
     });
   });
 
   describe('setLoading', () => {
     it('should set loading to true', () => {
       authStore.setLoading(true);
-      expect(authStore.isLoading()).toBeTrue();
+      expect(authStore.isLoading()).toBe(true);
     });
 
     it('should clear error when setting loading', () => {
@@ -74,7 +74,7 @@ describe('AuthStore', () => {
 
     it('should set isAuthenticated to true', () => {
       authStore.setAuth(mockUser, 'access-token', 'refresh-token');
-      expect(authStore.isAuthenticated()).toBeTrue();
+      expect(authStore.isAuthenticated()).toBe(true);
     });
 
     it('should store tokens in localStorage', () => {
@@ -87,7 +87,7 @@ describe('AuthStore', () => {
     it('should set loading to false', () => {
       authStore.setLoading(true);
       authStore.setAuth(mockUser, 'access-token', 'refresh-token');
-      expect(authStore.isLoading()).toBeFalse();
+      expect(authStore.isLoading()).toBe(false);
     });
 
     it('should clear error', () => {
@@ -122,7 +122,7 @@ describe('AuthStore', () => {
     it('should set loading to false', () => {
       authStore.setLoading(true);
       authStore.setError('Login failed');
-      expect(authStore.isLoading()).toBeFalse();
+      expect(authStore.isLoading()).toBe(false);
     });
   });
 
@@ -152,7 +152,7 @@ describe('AuthStore', () => {
 
     it('should set isAuthenticated to false', () => {
       authStore.clearAuth();
-      expect(authStore.isAuthenticated()).toBeFalse();
+      expect(authStore.isAuthenticated()).toBe(false);
     });
 
     it('should remove tokens from localStorage', () => {
@@ -200,17 +200,17 @@ describe('AuthStore', () => {
 
     it('should return false when user is null', () => {
       authStore.setTokens('token', 'refresh');
-      expect(authStore.isAuthenticated()).toBeFalse();
+      expect(authStore.isAuthenticated()).toBe(false);
     });
 
     it('should return false when accessToken is null', () => {
       // Can't set user without token via setAuth, so this tests initial state
-      expect(authStore.isAuthenticated()).toBeFalse();
+      expect(authStore.isAuthenticated()).toBe(false);
     });
 
     it('should return true when both user and accessToken exist', () => {
       authStore.setAuth(mockUser, 'token', 'refresh');
-      expect(authStore.isAuthenticated()).toBeTrue();
+      expect(authStore.isAuthenticated()).toBe(true);
     });
   });
 

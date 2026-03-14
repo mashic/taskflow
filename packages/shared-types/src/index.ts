@@ -29,18 +29,6 @@ export interface AuthResponse {
   tokens: AuthTokens;
 }
 
-// API response wrapper
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-}
-
-export interface ApiError {
-  statusCode: number;
-  message: string;
-  error?: string;
-}
-
 // Board types
 export interface Board {
   id: string;
