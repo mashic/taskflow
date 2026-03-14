@@ -55,14 +55,14 @@ Plans:
 **Plans**: 8 plans
 
 Plans:
-- [ ] 02-01: Backend board CRUD with repository pattern
-- [ ] 02-02: Frontend BoardStore with SignalStore
-- [ ] 02-03: Board list page and board creation
-- [ ] 02-04: Backend list/task CRUD with position ordering
-- [ ] 02-05: Frontend TaskStore with Entity Adapter
-- [ ] 02-06: Kanban board view with drag-drop (CDK)
-- [ ] 02-07: WebSocket gateway and real-time events
-- [ ] 02-08: Frontend WebSocket integration with SignalStore
+- [x] 02-01: Backend board CRUD with repository pattern
+- [x] 02-02: Frontend BoardStore with SignalStore
+- [x] 02-03: Board list page and board creation
+- [x] 02-04: Backend list/task CRUD with position ordering
+- [x] 02-05: Frontend TaskStore with Entity Adapter
+- [x] 02-06: Kanban board view with drag-drop (CDK)
+- [x] 02-07: WebSocket gateway and real-time events
+- [x] 02-08: Frontend WebSocket integration with SignalStore
 
 ### Phase 3: Advanced Features
 
