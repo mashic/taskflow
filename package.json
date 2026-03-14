@@ -1,5 +1,5 @@
 {
-  "name": "taskflow",
+  "name": "@taskflow/root",
   "version": "1.0.0",
   "description": "Real-time Kanban collaboration platform — Angular 21 + NestJS monorepo",
   "private": true,
