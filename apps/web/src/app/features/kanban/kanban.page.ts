@@ -3,12 +3,9 @@ import { Component, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { Task } from '@taskflow/shared-types';
-import { WebSocketService } from '../../core/websocket/websocket.service';
-import { BoardStore } from '../boards/board.store';
+import { BoardFacade } from './board.facade';
 import { KanbanList } from './kanban-list';
-import { ListStore } from './list.store';
 import { TaskCreateDialog } from './task-create.dialog';
-import { TaskStore } from './task.store';
 
 @Component({
   selector: 'app-kanban-page',
@@ -17,26 +14,26 @@ import { TaskStore } from './task.store';
   template: `
     <div class="kanban-container">
       <header class="kanban-header">
-        <h1>{{ boardStore.selectedBoard()?.title ?? 'Loading...' }}</h1>
-        @if (boardStore.selectedBoard()?.description) {
-          <p class="board-description">{{ boardStore.selectedBoard()?.description }}</p>
+        <h1>{{ facade.boardTitle() || 'Loading...' }}</h1>
+        @if (facade.boardDescription()) {
+          <p class="board-description">{{ facade.boardDescription() }}</p>
         }
       </header>
 
-      @if (listStore.isLoading() || taskStore.isLoading()) {
+      @if (facade.isLoading()) {
         <div class="loading">
           <p>Loading board...</p>
         </div>
-      } @else if (listStore.error() || taskStore.error()) {
+      } @else if (facade.error()) {
         <div class="error">
-          <p>{{ listStore.error() ?? taskStore.error() }}</p>
+          <p>{{ facade.error() }}</p>
         </div>
       } @else {
         <div class="kanban-board" cdkDropListGroup>
-          @for (list of listStore.sortedLists(); track list.id) {
+          @for (list of facade.lists(); track list.id) {
             <app-kanban-list
               [list]="list"
-              [tasks]="getTasksForList(list.id)"
+              [tasks]="facade.getTasksForList(list.id)"
               (onDrop)="handleDrop($event, list.id)"
               (onAddTask)="openTaskDialog(list.id)"
             />
@@ -110,12 +107,11 @@ import { TaskStore } from './task.store';
   `]
 })
 export class KanbanPage implements OnInit, OnDestroy {
-  boardStore = inject(BoardStore);
-  listStore = inject(ListStore);
-  taskStore = inject(TaskStore);
-  private route = inject(ActivatedRoute);
-  private wsService = inject(WebSocketService);
-  private destroyRef = inject(DestroyRef);
+  // Single facade injection instead of multiple stores (Facade Pattern)
+  readonly facade = inject(BoardFacade);
+
+  private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
 
   boardId = signal<string | null>(null);
   showTaskDialog = signal(false);
@@ -125,13 +121,8 @@ export class KanbanPage implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.boardId.set(id);
-      this.boardStore.setSelectedBoard(id);
-      this.listStore.loadListsForBoard(id);
-      this.taskStore.loadTasksForBoard(id);
-      
-      // Connect WebSocket and join board room
-      this.wsService.connect();
-      this.wsService.joinBoard(id);
+      // Single call to load all board data via facade
+      this.facade.loadBoard(id);
     }
 
     // Handle route changes (navigation between boards)
@@ -140,60 +131,28 @@ export class KanbanPage implements OnInit, OnDestroy {
     ).subscribe((params) => {
       const newId = params.get('id');
       if (newId && newId !== this.boardId()) {
-        // Leave old board room, join new one
-        const oldId = this.boardId();
-        if (oldId) {
-          this.wsService.leaveBoard(oldId);
-        }
-        
         this.boardId.set(newId);
-        this.boardStore.setSelectedBoard(newId);
-        this.listStore.loadListsForBoard(newId);
-        this.taskStore.loadTasksForBoard(newId);
-        this.wsService.joinBoard(newId);
+        // Facade handles leaving old board and joining new one
+        this.facade.switchBoard(newId);
       }
     });
   }
 
   ngOnDestroy(): void {
-    // Leave board room when navigating away
-    const id = this.boardId();
-    if (id) {
-      this.wsService.leaveBoard(id);
-    }
-  }
-
-  getTasksForList(listId: string): Task[] {
-    return this.taskStore.tasksByList().get(listId) ?? [];
+    // Facade handles cleanup
+    this.facade.unloadBoard();
   }
 
   handleDrop(event: CdkDragDrop<Task[]>, targetListId: string): void {
     const task = event.item.data as Task;
-    const newPosition = this.calculatePosition(event.currentIndex, targetListId, task.id);
+    const newPosition = this.facade.calculateTaskPosition(
+      event.currentIndex,
+      targetListId,
+      task.id
+    );
 
-    // Move task (works for both reorder and cross-list move)
-    this.taskStore.moveTask({
-      taskId: task.id,
-      listId: targetListId,
-      position: newPosition,
-    });
-  }
-
-  calculatePosition(index: number, listId: string, excludeTaskId: string): number {
-    // Get tasks excluding the one being moved
-    const tasks = this.getTasksForList(listId).filter(t => t.id !== excludeTaskId);
-
-    if (tasks.length === 0) {
-      return 1;
-    }
-    if (index === 0) {
-      return tasks[0].position / 2;
-    }
-    if (index >= tasks.length) {
-      return tasks[tasks.length - 1].position + 1;
-    }
-    // Insert between two tasks
-    return (tasks[index - 1].position + tasks[index].position) / 2;
+    // Move task via facade
+    this.facade.moveTask(task.id, targetListId, newPosition);
   }
 
   openTaskDialog(listId: string): void {
