@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum BoardRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -16,8 +22,11 @@ model User {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  boards       Board[]
-  assignedTasks Task[]
+  boards            Board[]
+  assignedTasks     Task[]
+  teamMemberships   TeamMember[]
+  sentInvitations   Invitation[]
+  comments          Comment[]
 
   @@map("users")
 }
@@ -31,9 +40,12 @@ model Board {
   updatedAt   DateTime  @updatedAt @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
-  owner User   @relation(fields: [ownerId], references: [id])
-  lists List[]
-  tasks Task[]
+  owner       User         @relation(fields: [ownerId], references: [id])
+  lists       List[]
+  tasks       Task[]
+  teamMembers TeamMember[]
+  invitations Invitation[]
+  comments    Comment[]
 
   @@map("boards")
 }
@@ -65,9 +77,59 @@ model Task {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
-  list     List  @relation(fields: [listId], references: [id], onDelete: Cascade)
-  board    Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  assignee User? @relation(fields: [assigneeId], references: [id])
+  list     List      @relation(fields: [listId], references: [id], onDelete: Cascade)
+  board    Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  assignee User?     @relation(fields: [assigneeId], references: [id])
+  comments Comment[]
 
   @@map("tasks")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  taskId    String   @map("task_id")
+  boardId   String   @map("board_id")
+  authorId  String   @map("author_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  task   Task  @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  board  Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  author User  @relation(fields: [authorId], references: [id])
+
+  @@map("comments")
+}
+
+model TeamMember {
+  id       String    @id @default(cuid())
+  boardId  String    @map("board_id")
+  userId   String    @map("user_id")
+  role     BoardRole
+  joinedAt DateTime  @default(now()) @map("joined_at")
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([boardId, userId])
+  @@map("team_members")
+}
+
+model Invitation {
+  id        String    @id @default(cuid())
+  type      String
+  boardId   String    @map("board_id")
+  inviterId String    @map("inviter_id")
+  email     String?
+  role      BoardRole
+  token     String    @unique
+  expiresAt DateTime  @map("expires_at")
+  maxUses   Int       @map("max_uses")
+  usedCount Int       @default(0) @map("used_count")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  inviter User  @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@map("invitations")
 }

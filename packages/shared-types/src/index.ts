@@ -148,8 +148,21 @@ export type ActivityType =
   | 'assigned'
   | 'commented';
 
+// Search types
+export interface SearchResult {
+  type: 'task';
+  id: string;
+  title: string;
+  description: string | null;
+  boardId: string;
+  listId: string;
+  rank: number;
+}
+
 // Board member / team types
-export interface BoardMember {
+export type BoardRole = 'OWNER' | 'ADMIN' | 'MEMBER';
+
+export interface TeamMember {
   id: string;
   boardId: string;
   userId: string;
@@ -158,11 +171,37 @@ export interface BoardMember {
   joinedAt: Date;
 }
 
-export type BoardRole = 'owner' | 'admin' | 'editor' | 'viewer';
+export type InvitationType = 'EMAIL' | 'LINK';
 
-export interface InviteMemberDto {
+export interface Invitation {
+  id: string;
+  type: InvitationType;
+  boardId: string;
+  inviterId: string;
+  inviter?: User;
+  email?: string;
+  role: BoardRole;
+  token: string;
+  expiresAt: Date;
+  maxUses: number;
+  usedCount: number;
+  createdAt: Date;
+}
+
+export interface CreateEmailInvitationDto {
+  boardId: string;
   email: string;
   role: BoardRole;
+}
+
+export interface CreateLinkInvitationDto {
+  boardId: string;
+  role: BoardRole;
+}
+
+export interface AcceptInvitationResponse {
+  teamMember: TeamMember;
+  boardId: string;
 }
 
 // WebSocket event types
