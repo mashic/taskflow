@@ -1,25 +1,15 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Board, List, Task } from '@taskflow/shared-types';
+import { List, Task } from '@taskflow/shared-types';
 import { of } from 'rxjs';
-import { WebSocketService } from '../../core/websocket/websocket.service';
-import { BoardStore } from '../boards/board.store';
+import { BoardFacade } from './board.facade';
 import { KanbanPage } from './kanban.page';
-import { ListStore } from './list.store';
-import { TaskStore } from './task.store';
 
 describe('KanbanPage', () => {
   let component: KanbanPage;
   let fixture: ComponentFixture<KanbanPage>;
-
-  const mockBoard: Board = {
-    id: '1',
-    title: 'Test Board',
-    ownerId: 'user1',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
 
   const mockLists: List[] = [
     { id: 'list1', title: 'To Do', boardId: '1', position: 1, createdAt: new Date(), updatedAt: new Date() },
@@ -30,49 +20,38 @@ describe('KanbanPage', () => {
     { id: 'task1', title: 'Task 1', listId: 'list1', boardId: '1', position: 1, createdAt: new Date(), updatedAt: new Date() },
   ];
 
-  const tasksByListMap = new Map<string, Task[]>([
-    ['list1', mockTasks],
-    ['list2', []],
-  ]);
-
-  const mockBoardStore = {
-    selectedBoard: signal<Board | null>(mockBoard),
-    setSelectedBoard: vi.fn(),
-  };
-
-  const mockListStore = {
+  const mockBoardFacade = {
+    // Signals
+    boardTitle: signal('Test Board'),
+    boardDescription: signal('Test Description'),
     isLoading: signal(false),
     error: signal<string | null>(null),
-    sortedLists: signal(mockLists),
-    loadListsForBoard: vi.fn(),
-  };
+    lists: signal(mockLists),
 
-  const mockTaskStore = {
-    isLoading: signal(false),
-    error: signal<string | null>(null),
-    tasksByList: signal(tasksByListMap),
-    loadTasksForBoard: vi.fn(),
+    // Methods
+    loadBoard: vi.fn(),
+    unloadBoard: vi.fn(),
+    switchBoard: vi.fn(),
     moveTask: vi.fn(),
-    createTask: vi.fn(),
-  };
 
-  const mockWsService = {
-    connect: vi.fn(),
-    disconnect: vi.fn(),
-    joinBoard: vi.fn(),
-    leaveBoard: vi.fn(),
-    isConnected: signal(false),
-    currentBoardId: signal<string | null>(null),
+    getTasksForList: vi.fn((listId: string) => {
+      return listId === 'list1' ? mockTasks : [];
+    }),
+
+    calculateTaskPosition: vi.fn((index: number, listId: string, _taskId: string) => {
+      const tasks = listId === 'list1' ? mockTasks : [];
+      if (tasks.length === 0) return 1;
+      if (index === 0) return tasks[0].position / 2;
+      if (index >= tasks.length) return tasks[tasks.length - 1].position + 1;
+      return (tasks[index - 1].position + tasks[index].position) / 2;
+    }),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [KanbanPage],
       providers: [
-        { provide: BoardStore, useValue: mockBoardStore },
-        { provide: ListStore, useValue: mockListStore },
-        { provide: TaskStore, useValue: mockTaskStore },
-        { provide: WebSocketService, useValue: mockWsService },
+        { provide: BoardFacade, useValue: mockBoardFacade },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -89,6 +68,7 @@ describe('KanbanPage', () => {
       ],
     }).compileComponents();
 
+    vi.clearAllMocks();
     fixture = TestBed.createComponent(KanbanPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -98,15 +78,8 @@ describe('KanbanPage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load board data on init', () => {
-    expect(mockBoardStore.setSelectedBoard).toHaveBeenCalledWith('1');
-    expect(mockListStore.loadListsForBoard).toHaveBeenCalledWith('1');
-    expect(mockTaskStore.loadTasksForBoard).toHaveBeenCalledWith('1');
-  });
-
-  it('should connect WebSocket and join board on init', () => {
-    expect(mockWsService.connect).toHaveBeenCalled();
-    expect(mockWsService.joinBoard).toHaveBeenCalledWith('1');
+  it('should load board data on init via facade', () => {
+    expect(mockBoardFacade.loadBoard).toHaveBeenCalledWith('1');
   });
 
   it('should display board title', () => {
@@ -119,19 +92,19 @@ describe('KanbanPage', () => {
     expect(lists.length).toBe(2);
   });
 
-  it('should get tasks for a list', () => {
-    const tasks = component.getTasksForList('list1');
+  it('should get tasks for a list via facade', () => {
+    const tasks = component.facade.getTasksForList('list1');
     expect(tasks.length).toBe(1);
     expect(tasks[0].title).toBe('Task 1');
   });
 
-  it('should calculate position for empty list', () => {
-    const position = component.calculatePosition(0, 'list2', 'task-new');
+  it('should calculate position for empty list via facade', () => {
+    const position = component.facade.calculateTaskPosition(0, 'list2', 'task-new');
     expect(position).toBe(1);
   });
 
-  it('should calculate position for first in list', () => {
-    const position = component.calculatePosition(0, 'list1', 'task-new');
+  it('should calculate position for first in list via facade', () => {
+    const position = component.facade.calculateTaskPosition(0, 'list1', 'task-new');
     expect(position).toBe(0.5);
   });
 

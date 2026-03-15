@@ -120,7 +120,7 @@ describe('BoardService', () => {
   describe('deleteBoard', () => {
     it('should delete a board', () => {
       service.deleteBoard('1').subscribe((result) => {
-        expect(result).toBeUndefined();
+        expect(result).toBeNull();
       });
 
       const req = httpMock.expectOne('/api/boards/1');

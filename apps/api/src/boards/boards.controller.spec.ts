@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BoardsController } from './boards.controller';
 import { BoardsService } from './boards.service';
 
+// Mock guard to bypass authentication and permission checks in tests
+const mockGuard = { canActivate: jest.fn().mockReturnValue(true) };
+
 describe('BoardsController', () => {
   let controller: BoardsController;
   let service: jest.Mocked<BoardsService>;
@@ -32,7 +35,12 @@ describe('BoardsController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BoardsController],
       providers: [{ provide: BoardsService, useValue: mockService }],
-    }).compile();
+    })
+      .overrideGuard(require('../auth/guards/jwt-auth.guard').JwtAuthGuard)
+      .useValue(mockGuard)
+      .overrideGuard(require('../permissions/permissions.guard').BoardPermissionGuard)
+      .useValue(mockGuard)
+      .compile();
 
     controller = module.get<BoardsController>(BoardsController);
     service = module.get(BoardsService);
