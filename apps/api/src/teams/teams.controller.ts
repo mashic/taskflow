@@ -9,6 +9,8 @@ import {
   Request,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { BoardPermissionGuard } from '../permissions/permissions.guard';
+import { RequirePermission } from '../permissions/decorators/require-permission.decorator';
 import { TeamsService } from './teams.service';
 import { BoardRole } from '@prisma/client';
 
@@ -26,6 +28,8 @@ export class TeamsController {
    * GET /teams/board/:boardId/members
    */
   @Get('board/:boardId/members')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('read')
   async getMembers(@Param('boardId') boardId: string) {
     return this.teamsService.getMembers(boardId);
   }
@@ -35,6 +39,8 @@ export class TeamsController {
    * PATCH /teams/members/:id/role
    */
   @Patch('members/:id/role')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('manageMembers')
   async updateRole(
     @Param('id') id: string,
     @Body() dto: UpdateRoleDto,
@@ -48,6 +54,8 @@ export class TeamsController {
    * DELETE /teams/members/:id
    */
   @Delete('members/:id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('manageMembers')
   async removeMember(
     @Param('id') id: string,
     @Request() req: { user: { userId: string } },

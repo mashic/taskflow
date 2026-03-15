@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { Board } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { BoardPermissionGuard } from '../permissions/permissions.guard';
+import { RequirePermission } from '../permissions/decorators/require-permission.decorator';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
@@ -38,6 +40,8 @@ export class BoardsController {
   }
 
   @Get(':id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('read')
   async findOne(
     @Param('id') id: string,
     @Request() req: RequestWithUser,
@@ -46,6 +50,8 @@ export class BoardsController {
   }
 
   @Patch(':id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateBoardDto,
@@ -55,6 +61,8 @@ export class BoardsController {
   }
 
   @Delete(':id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('delete')
   async remove(
     @Param('id') id: string,
     @Request() req: RequestWithUser,

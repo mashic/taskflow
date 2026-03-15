@@ -9,6 +9,6 @@ import { BoardsService } from './boards.service';
   imports: [PrismaModule, forwardRef(() => EventsModule)],
   controllers: [BoardsController],
   providers: [BoardsService, BoardsRepository],
-  exports: [BoardsService],
+  exports: [BoardsService, BoardsRepository],
 })
 export class BoardsModule {}

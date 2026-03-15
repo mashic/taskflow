@@ -10,7 +10,10 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { List } from '@prisma/client';
+import { AuditLog } from '../activity/decorators/audit-log.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { BoardPermissionGuard } from '../permissions/permissions.guard';
+import { RequirePermission } from '../permissions/decorators/require-permission.decorator';
 import { CreateListDto } from './dto/create-list.dto';
 import { ReorderListDto } from './dto/reorder-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
@@ -26,6 +29,9 @@ export class ListsController {
   constructor(private listsService: ListsService) {}
 
   @Post('boards/:boardId/lists')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
+  @AuditLog({ action: 'created', entity: 'list' })
   async create(
     @Param('boardId') boardId: string,
     @Body() dto: CreateListDto,
@@ -35,6 +41,8 @@ export class ListsController {
   }
 
   @Get('boards/:boardId/lists')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('read')
   async findByBoard(
     @Param('boardId') boardId: string,
     @Request() req: RequestWithUser,
@@ -43,6 +51,8 @@ export class ListsController {
   }
 
   @Get('lists/:id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('read')
   async findOne(
     @Param('id') id: string,
     @Request() req: RequestWithUser,
@@ -51,6 +61,9 @@ export class ListsController {
   }
 
   @Patch('lists/:id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
+  @AuditLog({ action: 'updated', entity: 'list' })
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateListDto,
@@ -60,6 +73,9 @@ export class ListsController {
   }
 
   @Patch('lists/:id/reorder')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
+  @AuditLog({ action: 'moved', entity: 'list' })
   async reorder(
     @Param('id') id: string,
     @Body() dto: ReorderListDto,
@@ -69,6 +85,9 @@ export class ListsController {
   }
 
   @Delete('lists/:id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
+  @AuditLog({ action: 'deleted', entity: 'list' })
   async remove(
     @Param('id') id: string,
     @Request() req: RequestWithUser,

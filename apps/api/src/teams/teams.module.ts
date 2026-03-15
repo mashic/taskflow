@@ -8,6 +8,6 @@ import { InvitationsModule } from '../invitations/invitations.module';
   imports: [forwardRef(() => InvitationsModule)],
   controllers: [TeamsController],
   providers: [TeamsService, TeamsRepository],
-  exports: [TeamsService],
+  exports: [TeamsService, TeamsRepository],
 })
 export class TeamsModule {}

@@ -27,6 +27,7 @@ model User {
   teamMemberships   TeamMember[]
   sentInvitations   Invitation[]
   comments          Comment[]
+  activities        Activity[]
 
   @@map("users")
 }
@@ -46,6 +47,7 @@ model Board {
   teamMembers TeamMember[]
   invitations Invitation[]
   comments    Comment[]
+  activities  Activity[]
 
   @@map("boards")
 }
@@ -132,4 +134,21 @@ model Invitation {
   inviter User  @relation(fields: [inviterId], references: [id], onDelete: Cascade)
 
   @@map("invitations")
+}
+
+model Activity {
+  id         String   @id @default(cuid())
+  type       String   // created, updated, deleted, moved, assigned, commented
+  entityType String   @map("entity_type") // board, list, task, comment
+  entityId   String   @map("entity_id")
+  boardId    String   @map("board_id")
+  userId     String   @map("user_id")
+  data       Json?    // Additional metadata like old/new values
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([boardId, createdAt(sort: Desc)])
+  @@map("activities")
 }

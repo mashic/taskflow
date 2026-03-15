@@ -10,7 +10,10 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { Task } from '@prisma/client';
+import { AuditLog } from '../activity/decorators/audit-log.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { BoardPermissionGuard } from '../permissions/permissions.guard';
+import { RequirePermission } from '../permissions/decorators/require-permission.decorator';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { MoveTaskDto } from './dto/move-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -26,6 +29,9 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Post('lists/:listId/tasks')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
+  @AuditLog({ action: 'created', entity: 'task' })
   async create(
     @Param('listId') listId: string,
     @Body() dto: CreateTaskDto,
@@ -35,6 +41,8 @@ export class TasksController {
   }
 
   @Get('boards/:boardId/tasks')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('read')
   async findByBoard(
     @Param('boardId') boardId: string,
     @Request() req: RequestWithUser,
@@ -43,6 +51,8 @@ export class TasksController {
   }
 
   @Get('tasks/:id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('read')
   async findOne(
     @Param('id') id: string,
     @Request() req: RequestWithUser,
@@ -51,6 +61,9 @@ export class TasksController {
   }
 
   @Patch('tasks/:id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
+  @AuditLog({ action: 'updated', entity: 'task' })
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateTaskDto,
@@ -60,6 +73,9 @@ export class TasksController {
   }
 
   @Patch('tasks/:id/move')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
+  @AuditLog({ action: 'moved', entity: 'task' })
   async move(
     @Param('id') id: string,
     @Body() dto: MoveTaskDto,
@@ -69,6 +85,9 @@ export class TasksController {
   }
 
   @Delete('tasks/:id')
+  @UseGuards(BoardPermissionGuard)
+  @RequirePermission('write')
+  @AuditLog({ action: 'deleted', entity: 'task' })
   async remove(
     @Param('id') id: string,
     @Request() req: RequestWithUser,

@@ -9,6 +9,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { AuditLog } from '../activity/decorators/audit-log.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -24,6 +25,7 @@ export class CommentsController {
   constructor(private commentsService: CommentsService) {}
 
   @Post()
+  @AuditLog({ action: 'commented', entity: 'comment' })
   create(@Body() dto: CreateCommentDto, @Request() req: AuthenticatedRequest) {
     return this.commentsService.create(dto, req.user.sub);
   }
@@ -48,6 +50,7 @@ export class CommentsController {
   }
 
   @Delete(':id')
+  @AuditLog({ action: 'deleted', entity: 'comment' })
   delete(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
     return this.commentsService.delete(id, req.user.sub);
   }

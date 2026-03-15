@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ActivityModule } from './activity/activity.module';
 import { AuthModule } from './auth/auth.module';
 import { BoardsModule } from './boards/boards.module';
 import { CommentsModule } from './comments/comments.module';
 import { EventsModule } from './events/events.module';
 import { InvitationsModule } from './invitations/invitations.module';
 import { ListsModule } from './lists/lists.module';
+import { PermissionsModule } from './permissions/permissions.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SearchModule } from './search/search.module';
 import { TasksModule } from './tasks/tasks.module';
@@ -26,6 +28,8 @@ import { UsersModule } from './users/users.module';
     InvitationsModule,
     TeamsModule,
     CommentsModule,
+    PermissionsModule,
+    ActivityModule,
   ],
 })
 export class AppModule {}

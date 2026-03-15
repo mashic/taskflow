@@ -258,3 +258,30 @@ export interface ApiError {
   message: string | string[];
   error?: string;
 }
+
+// Permission types (Strategy pattern RBAC)
+export type PermissionAction = 'read' | 'write' | 'manageMembers' | 'delete';
+
+/**
+ * Permission matrix by role
+ * Each role maps to allowed actions
+ */
+export interface RolePermissions {
+  role: BoardRole;
+  canRead: boolean;
+  canWrite: boolean;
+  canManageMembers: boolean;
+  canDelete: boolean;
+}
+
+/**
+ * Default permission matrix
+ * OWNER: all permissions
+ * ADMIN: all except delete
+ * MEMBER: read + write only
+ */
+export const DEFAULT_ROLE_PERMISSIONS: Record<BoardRole, Omit<RolePermissions, 'role'>> = {
+  OWNER: { canRead: true, canWrite: true, canManageMembers: true, canDelete: true },
+  ADMIN: { canRead: true, canWrite: true, canManageMembers: true, canDelete: false },
+  MEMBER: { canRead: true, canWrite: true, canManageMembers: false, canDelete: false },
+};
