@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { WebSocketService } from './websocket.service';
-import { TaskStore } from '../../features/kanban/task.store';
 import { ListStore } from '../../features/kanban/list.store';
+import { TaskStore } from '../../features/kanban/task.store';
+import { WebSocketService } from './websocket.service';
 
 // Mock socket.io-client
 const mockSocket = {

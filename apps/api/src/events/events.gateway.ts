@@ -1,16 +1,16 @@
-import {
-  ConnectedSocket,
-  MessageBody,
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
 import { Injectable, Logger } from '@nestjs/common';
-import { Server, Socket } from 'socket.io';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import {
+    ConnectedSocket,
+    MessageBody,
+    OnGatewayConnection,
+    OnGatewayDisconnect,
+    SubscribeMessage,
+    WebSocketGateway,
+    WebSocketServer,
+} from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
 
 interface JoinBoardPayload {
   boardId: string;
@@ -151,5 +151,23 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   broadcastTaskDeleted(boardId: string, taskId: string) {
     this.server.to(`board:${boardId}`).emit('task.deleted', { id: taskId });
+  }
+
+  // Comment events
+  broadcastCommentCreated(boardId: string, comment: unknown) {
+    this.server.to(`board:${boardId}`).emit('comment.created', comment);
+  }
+
+  broadcastCommentUpdated(boardId: string, comment: unknown) {
+    this.server.to(`board:${boardId}`).emit('comment.updated', comment);
+  }
+
+  broadcastCommentDeleted(boardId: string, commentId: string, taskId: string) {
+    this.server.to(`board:${boardId}`).emit('comment.deleted', { id: commentId, taskId });
+  }
+
+  // Notification events (for @mentions)
+  broadcastNotification(boardId: string, notification: unknown) {
+    this.server.to(`board:${boardId}`).emit('notification', notification);
   }
 }

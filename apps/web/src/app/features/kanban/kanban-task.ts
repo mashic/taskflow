@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
+import { Component, input } from '@angular/core';
 import { Task } from '@taskflow/shared-types';
 
 @Component({

@@ -1,14 +1,14 @@
+import { CdkDragDrop, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Component, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { CdkDropListGroup, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Task } from '@taskflow/shared-types';
-import { BoardStore } from '../boards/board.store';
-import { ListStore } from './list.store';
-import { TaskStore } from './task.store';
-import { KanbanList } from './kanban-list';
-import { TaskCreateDialog } from './task-create.dialog';
 import { WebSocketService } from '../../core/websocket/websocket.service';
+import { BoardStore } from '../boards/board.store';
+import { KanbanList } from './kanban-list';
+import { ListStore } from './list.store';
+import { TaskCreateDialog } from './task-create.dialog';
+import { TaskStore } from './task.store';
 
 @Component({
   selector: 'app-kanban-page',

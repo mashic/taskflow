@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { BoardsModule } from './boards/boards.module';
+import { CommentsModule } from './comments/comments.module';
 import { EventsModule } from './events/events.module';
 import { InvitationsModule } from './invitations/invitations.module';
 import { ListsModule } from './lists/lists.module';
@@ -24,6 +25,7 @@ import { UsersModule } from './users/users.module';
     SearchModule,
     InvitationsModule,
     TeamsModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

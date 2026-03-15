@@ -1,13 +1,13 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { signal } from '@angular/core';
+import { Board, List, Task } from '@taskflow/shared-types';
 import { of } from 'rxjs';
-import { KanbanPage } from './kanban.page';
+import { WebSocketService } from '../../core/websocket/websocket.service';
 import { BoardStore } from '../boards/board.store';
+import { KanbanPage } from './kanban.page';
 import { ListStore } from './list.store';
 import { TaskStore } from './task.store';
-import { WebSocketService } from '../../core/websocket/websocket.service';
-import { Board, List, Task } from '@taskflow/shared-types';
 
 describe('KanbanPage', () => {
   let component: KanbanPage;

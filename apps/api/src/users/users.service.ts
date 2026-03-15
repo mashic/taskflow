@@ -28,6 +28,10 @@ export class UsersService {
     return this.usersRepository.findById(id);
   }
 
+  async findByNames(names: string[]): Promise<User[]> {
+    return this.usersRepository.findByNames(names);
+  }
+
   async updateRefreshToken(id: string, refreshToken: string | null): Promise<void> {
     await this.usersRepository.updateRefreshToken(id, refreshToken);
   }

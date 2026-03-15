@@ -1,8 +1,8 @@
-import { Injectable, inject, signal, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { List, Task } from '@taskflow/shared-types';
 import { io, Socket } from 'socket.io-client';
-import { Task, List } from '@taskflow/shared-types';
-import { TaskStore } from '../../features/kanban/task.store';
 import { ListStore } from '../../features/kanban/list.store';
+import { TaskStore } from '../../features/kanban/task.store';
 import { websocketConfig } from './websocket.config';
 
 /**

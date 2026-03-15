@@ -1,13 +1,13 @@
 import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Request,
-  UseGuards,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Request,
+    UseGuards,
 } from '@nestjs/common';
 import { Board } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';

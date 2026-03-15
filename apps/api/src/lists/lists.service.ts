@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { List } from '@prisma/client';
 import { BoardsService } from '../boards/boards.service';
 import { EventsGateway } from '../events/events.gateway';

@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
-import { BoardsPage } from './boards.page';
-import { BoardStore } from './board.store';
 import { Board } from '@taskflow/shared-types';
+import { BoardStore } from './board.store';
+import { BoardsPage } from './boards.page';
 
 // Mock BoardStore
 const mockBoardStore = {

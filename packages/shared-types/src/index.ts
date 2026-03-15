@@ -128,6 +128,18 @@ export interface CreateCommentDto {
   taskId: string;
 }
 
+// Notification types (Strategy pattern)
+export interface NotificationPayload {
+  type: 'mention' | 'reply' | 'assignment';
+  title: string;
+  body: string;
+  taskId: string;
+  boardId: string;
+  commentId: string;
+  senderId: string;
+  senderName?: string;
+}
+
 // Activity types
 export interface Activity {
   id: string;

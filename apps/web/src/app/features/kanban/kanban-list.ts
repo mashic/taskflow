@@ -1,5 +1,5 @@
+import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { Component, input, output } from '@angular/core';
-import { CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { List, Task } from '@taskflow/shared-types';
 import { KanbanTask } from './kanban-task';
 

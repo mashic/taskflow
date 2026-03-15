@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Board } from '@taskflow/shared-types';
 import { of, throwError } from 'rxjs';
@@ -38,8 +39,11 @@ describe('BoardStore', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: BoardService, useValue: boardServiceMock }],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: BoardService, useValue: boardServiceMock },
+      ],
     });
 
     boardStore = TestBed.inject(BoardStore);
