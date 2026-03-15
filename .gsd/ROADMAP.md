@@ -11,8 +11,8 @@ TaskFlow is built in 4 phases: Foundation (monorepo + auth), Core Features (boar
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Foundation** - Monorepo setup, auth module, core UI shell (completed 2026-03-14)
-- [ ] **Phase 2: Core Features** - Boards, lists, tasks, real-time sync ← Next
-- [ ] **Phase 3: Advanced Features** - Comments, activity, search, team management
+- [x] **Phase 2: Core Features** - Boards, lists, tasks, real-time sync (completed 2026-03-15)
+- [ ] **Phase 3: Advanced Features** - Comments, activity, search, team management ← Next
 - [ ] **Phase 4: Polish** - Performance, testing coverage, DevOps
 
 ## Phase Details
