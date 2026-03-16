@@ -1,9 +1,9 @@
 import { Component, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { AuthStore } from '../auth/auth.store';
 import { SearchResultsComponent } from '../../features/search/search-results';
 import { SearchStore } from '../../features/search/search.store';
+import { AuthService } from '../auth/auth.service';
+import { AuthStore } from '../auth/auth.store';
 
 @Component({
   selector: 'app-header',

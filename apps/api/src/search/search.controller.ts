@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
-  Controller,
-  Get,
-  Query,
-  UseGuards,
+    BadRequestException,
+    Controller,
+    Get,
+    Query,
+    UseGuards,
 } from '@nestjs/common';
 import { SearchResult } from '@taskflow/shared-types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';

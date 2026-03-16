@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { BoardRole } from '@prisma/client';
-import { PermissionStrategy, PermissionAction } from './strategies/permission.strategy';
-import { OwnerPermissionStrategy } from './strategies/owner-permission.strategy';
-import { AdminPermissionStrategy } from './strategies/admin-permission.strategy';
-import { MemberPermissionStrategy } from './strategies/member-permission.strategy';
-import { TeamsRepository } from '../teams/teams.repository';
 import { BoardsRepository } from '../boards/boards.repository';
 import { ListsRepository } from '../lists/lists.repository';
 import { PrismaService } from '../prisma/prisma.service';
+import { TeamsRepository } from '../teams/teams.repository';
+import { AdminPermissionStrategy } from './strategies/admin-permission.strategy';
+import { MemberPermissionStrategy } from './strategies/member-permission.strategy';
+import { OwnerPermissionStrategy } from './strategies/owner-permission.strategy';
+import { PermissionAction, PermissionStrategy } from './strategies/permission.strategy';
 
 /**
  * Permissions Service

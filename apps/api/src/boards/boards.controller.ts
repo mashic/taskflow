@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { Board } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { BoardPermissionGuard } from '../permissions/permissions.guard';
 import { RequirePermission } from '../permissions/decorators/require-permission.decorator';
+import { BoardPermissionGuard } from '../permissions/permissions.guard';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';

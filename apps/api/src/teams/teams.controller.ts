@@ -1,18 +1,18 @@
 import {
-  Controller,
-  Get,
-  Patch,
-  Delete,
-  Param,
-  Body,
-  UseGuards,
-  Request,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Request,
+    UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { BoardPermissionGuard } from '../permissions/permissions.guard';
-import { RequirePermission } from '../permissions/decorators/require-permission.decorator';
-import { TeamsService } from './teams.service';
 import { BoardRole } from '@prisma/client';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RequirePermission } from '../permissions/decorators/require-permission.decorator';
+import { BoardPermissionGuard } from '../permissions/permissions.guard';
+import { TeamsService } from './teams.service';
 
 class UpdateRoleDto {
   role: BoardRole;

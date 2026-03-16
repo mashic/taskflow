@@ -1,10 +1,10 @@
 import { DatePipe } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  input,
+    ChangeDetectionStrategy,
+    Component,
+    effect,
+    inject,
+    input,
 } from '@angular/core';
 import { ActivityStore } from './activity.store';
 

@@ -1,8 +1,8 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { TeamsController } from './teams.controller';
-import { TeamsService } from './teams.service';
-import { TeamsRepository } from './teams.repository';
 import { InvitationsModule } from '../invitations/invitations.module';
+import { TeamsController } from './teams.controller';
+import { TeamsRepository } from './teams.repository';
+import { TeamsService } from './teams.service';
 
 @Module({
   imports: [forwardRef(() => InvitationsModule)],

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException, ForbiddenException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { BoardRole, TeamMember } from '@prisma/client';
 import { TeamsRepository } from './teams.repository';
 

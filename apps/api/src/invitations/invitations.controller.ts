@@ -1,16 +1,16 @@
 import {
-  Controller,
-  Post,
-  Get,
-  Delete,
-  Body,
-  Param,
-  UseGuards,
-  Request,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Request,
+    UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { InvitationsService } from './invitations.service';
 import { CreateEmailInvitationDto, CreateLinkInvitationDto } from './dto/create-invitation.dto';
+import { InvitationsService } from './invitations.service';
 
 @Controller('invitations')
 @UseGuards(JwtAuthGuard)

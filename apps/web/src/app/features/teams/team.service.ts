@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import {
-  TeamMember,
-  Invitation,
-  CreateEmailInvitationDto,
-  CreateLinkInvitationDto,
-  BoardRole,
-  AcceptInvitationResponse,
+    AcceptInvitationResponse,
+    BoardRole,
+    CreateEmailInvitationDto,
+    CreateLinkInvitationDto,
+    Invitation,
+    TeamMember,
 } from '@taskflow/shared-types';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';

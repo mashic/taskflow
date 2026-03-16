@@ -1,5 +1,5 @@
-import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { ListStore } from '../../features/kanban/list.store';
 import { TaskStore } from '../../features/kanban/task.store';
 import { WebSocketService } from './websocket.service';

@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
-import { Invitation, BoardRole } from '@prisma/client';
-import { InvitationsRepository } from './invitations.repository';
-import { InvitationFactory, InvitationType } from './factories/invitation.factory';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BoardRole, Invitation } from '@prisma/client';
 import { TeamsService } from '../teams/teams.service';
 import { CreateEmailInvitationDto, CreateLinkInvitationDto } from './dto/create-invitation.dto';
+import { InvitationFactory, InvitationType } from './factories/invitation.factory';
+import { InvitationsRepository } from './invitations.repository';
 
 @Injectable()
 export class InvitationsService {

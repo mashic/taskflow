@@ -7,9 +7,9 @@ import { CommentsRepository } from './comments.repository';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import {
-  NotificationPayload,
-  NotificationStrategy,
-  NOTIFICATION_STRATEGIES,
+    NOTIFICATION_STRATEGIES,
+    NotificationPayload,
+    NotificationStrategy,
 } from './strategies/notification.strategy';
 
 @Injectable()

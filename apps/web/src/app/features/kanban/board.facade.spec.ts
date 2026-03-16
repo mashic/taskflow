@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TestBed } from '@angular/core/testing';
-import { BoardFacade } from './board.facade';
 import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { BoardFacade } from './board.facade';
 
 // Mock stores with minimal signal interface
 const createMockStore = (overrides = {}) => ({

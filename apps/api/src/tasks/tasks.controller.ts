@@ -1,19 +1,19 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Patch,
-    Post,
-    Request,
-    UseGuards,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { Task } from '@prisma/client';
 import { AuditLog } from '../activity/decorators/audit-log.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { BoardPermissionGuard } from '../permissions/permissions.guard';
 import { RequirePermission } from '../permissions/decorators/require-permission.decorator';
+import { BoardPermissionGuard } from '../permissions/permissions.guard';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { MoveTaskDto } from './dto/move-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';

@@ -1,13 +1,13 @@
 import { computed, inject } from '@angular/core';
-import { SearchResult } from '@taskflow/shared-types';
 import {
-  patchState,
-  signalStore,
-  withComputed,
-  withMethods,
-  withState,
+    patchState,
+    signalStore,
+    withComputed,
+    withMethods,
+    withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { SearchResult } from '@taskflow/shared-types';
 import { debounceTime, distinctUntilChanged, filter, pipe, switchMap, tap } from 'rxjs';
 import { SearchService } from './search.service';
 

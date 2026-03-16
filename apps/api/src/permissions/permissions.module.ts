@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { PermissionsService } from './permissions.service';
-import { BoardPermissionGuard } from './permissions.guard';
-import { OwnerPermissionStrategy } from './strategies/owner-permission.strategy';
-import { AdminPermissionStrategy } from './strategies/admin-permission.strategy';
-import { MemberPermissionStrategy } from './strategies/member-permission.strategy';
-import { TeamsModule } from '../teams/teams.module';
 import { BoardsModule } from '../boards/boards.module';
 import { ListsModule } from '../lists/lists.module';
 import { PrismaModule } from '../prisma/prisma.module';
+import { TeamsModule } from '../teams/teams.module';
+import { BoardPermissionGuard } from './permissions.guard';
+import { PermissionsService } from './permissions.service';
+import { AdminPermissionStrategy } from './strategies/admin-permission.strategy';
+import { MemberPermissionStrategy } from './strategies/member-permission.strategy';
+import { OwnerPermissionStrategy } from './strategies/owner-permission.strategy';
 
 /**
  * Permissions Module

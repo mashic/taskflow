@@ -1,21 +1,21 @@
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
-  patchState,
-  signalStore,
-  withComputed,
-  withMethods,
-  withState,
+    patchState,
+    signalStore,
+    withComputed,
+    withMethods,
+    withState,
 } from '@ngrx/signals';
 import {
-  addEntity,
-  removeEntity,
-  setAllEntities,
-  updateEntity,
-  withEntities,
+    addEntity,
+    removeEntity,
+    setAllEntities,
+    updateEntity,
+    withEntities,
 } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { TeamMember, Invitation, BoardRole } from '@taskflow/shared-types';
+import { BoardRole, Invitation, TeamMember } from '@taskflow/shared-types';
 import { pipe, switchMap, tap } from 'rxjs';
 import { TeamService } from './team.service';
 

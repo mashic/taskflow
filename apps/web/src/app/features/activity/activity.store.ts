@@ -1,13 +1,13 @@
 import { computed, inject } from '@angular/core';
-import { Activity } from '@taskflow/shared-types';
 import {
-  patchState,
-  signalStore,
-  withComputed,
-  withMethods,
-  withState,
+    patchState,
+    signalStore,
+    withComputed,
+    withMethods,
+    withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { Activity } from '@taskflow/shared-types';
 import { pipe, switchMap, tap } from 'rxjs';
 import { ActivityService } from './activity.service';
 

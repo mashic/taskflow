@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, OnInit, effect } from '@angular/core';
+import { Component, OnInit, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BoardRole, TeamMember } from '@taskflow/shared-types';
 import { TeamStore } from '../team.store';

@@ -1,9 +1,9 @@
 import {
-  Controller,
-  Get,
-  Param,
-  Query,
-  UseGuards,
+    Controller,
+    Get,
+    Param,
+    Query,
+    UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ActivityService } from './activity.service';
